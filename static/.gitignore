@@ -1,0 +1,35 @@
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Database (local demo records)
+bank.db
+*.db
+*.db-wal
+*.db-shm
+
+# Environment variables and secrets
+.env
+.env.*
+!.env.example
+
+# Editor files
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Other dependencies
+node_modules/

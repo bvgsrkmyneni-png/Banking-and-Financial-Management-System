@@ -1,0 +1,1119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SDFC Finance | Banking and Financial Management System</title>
+
+    <link rel="stylesheet" href="/static/style.css">
+
+    <style>
+        [hidden] {
+            display: none !important;
+        }
+
+        .role-switch {
+            display: flex;
+            gap: 10px;
+            margin: 18px 0;
+            flex-wrap: wrap;
+        }
+
+        .role-switch button {
+            flex: 1;
+            min-width: 125px;
+        }
+
+        .role-switch button.selected {
+            outline: 2px solid #30d5c8;
+            outline-offset: 2px;
+        }
+
+        .login-note {
+            margin-top: 15px;
+            font-size: 13px;
+            opacity: .75;
+        }
+
+        .role-label {
+            display: inline-block;
+            padding: 6px 12px;
+            border: 1px solid #30d5c8;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-top: 8px;
+        }
+
+        .admin-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .admin-actions button {
+            padding: 8px 12px;
+        }
+
+        .section-gap {
+            margin-top: 20px;
+        }
+
+        .status-pill {
+            font-weight: 700;
+        }
+
+        .admin-note {
+            font-size: 13px;
+            opacity: .8;
+            margin-top: 12px;
+        }
+    </style>
+</head>
+
+<body data-theme="dark">
+
+<div class="shell">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside>
+
+        <div class="brand">
+            ◈ SDFC FINANCE
+            <small>SMART DIGITAL FINANCE CORPORATION</small>
+        </div>
+
+        <div class="nav">
+
+            <button onclick="show('overview')">
+                ▦ Overview
+            </button>
+
+            <button onclick="show('emi')">
+                ▤ EMI Calculator
+            </button>
+
+            <!-- CUSTOMER MENU -->
+
+            <button data-role="CUSTOMER" hidden onclick="show('loans')">
+                ◈ My Loans
+            </button>
+
+            <button data-role="CUSTOMER" hidden onclick="show('schedule')">
+                ◷ Repayment Schedule
+            </button>
+
+            <button data-role="CUSTOMER" hidden onclick="show('transfer')">
+                ⇄ Transfer Money
+            </button>
+
+            <button data-role="CUSTOMER" hidden onclick="show('cash')">
+                ▣ Deposit / Withdraw
+            </button>
+
+            <button data-role="CUSTOMER" hidden onclick="show('profile')">
+                ♙ My Profile
+            </button>
+
+            <button data-role="CUSTOMER" hidden onclick="show('history')">
+                ▤ My Transactions
+            </button>
+
+            <!-- ADMIN MENU -->
+
+            <button data-role="ADMIN" hidden onclick="show('accounts')">
+                ♙ Manage Accounts
+            </button>
+
+            <button data-role="ADMIN" hidden onclick="show('adminLoans')">
+                ◈ Manage Loans
+            </button>
+
+            <button data-role="ADMIN" hidden onclick="show('adminHistory')">
+                ▤ All Transactions
+            </button>
+
+            <button data-role="ADMIN" hidden onclick="show('audit')">
+                ✓ Integrity Check
+            </button>
+
+        </div>
+
+        <div class="foot">
+            SDFC FINANCE
+            <br>
+            Smart Digital Finance Corporation
+            <br>
+            Educational Demonstration Only
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main>
+
+        <header>
+
+            <div>
+
+                <div class="eyebrow">
+                    BANKING AND FINANCIAL MANAGEMENT SYSTEM
+                </div>
+
+                <h1 id="heading">
+                    Welcome to SDFC Finance
+                </h1>
+
+                <p>
+                    Secure Banking. Smart Finance. Easy Repayments.
+                </p>
+
+                <span class="role-label" id="roleLabel" hidden>
+                    Customer
+                </span>
+
+            </div>
+
+            <div class="header-actions">
+
+                <button id="themeToggle"
+                        class="theme-toggle"
+                        type="button">
+                    ☀ Light Mode
+                </button>
+
+                <div class="user" id="user">
+                    Welcome
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= LOGIN ================= -->
+
+        <section id="login" class="panel login">
+
+            <h2>Welcome to SDFC Finance</h2>
+
+            <p>
+                Sign in to your Banking and Financial Management System.
+            </p>
+
+            <div class="role-switch">
+
+                <button type="button"
+                        id="customerRoleBtn"
+                        class="selected"
+                        onclick="selectLoginRole('CUSTOMER')">
+                    Customer Login
+                </button>
+
+                <button type="button"
+                        id="adminRoleBtn"
+                        onclick="selectLoginRole('ADMIN')">
+                    Admin Login
+                </button>
+
+            </div>
+
+            <form id="loginForm">
+
+                <input type="hidden"
+                       name="role"
+                       id="loginRole"
+                       value="CUSTOMER">
+
+                <div id="customerLoginFields">
+
+                    <label>
+                        Account Number
+                        <input name="number"
+                               placeholder="Enter account number"
+                               value="10010001"
+                               autocomplete="username">
+                    </label>
+
+                    <label>
+                        4-Digit PIN
+                        <input name="pin"
+                               type="password"
+                               placeholder="Enter PIN"
+                               value="1234"
+                               autocomplete="current-password">
+                    </label>
+
+                </div>
+
+                <div id="adminLoginFields" hidden>
+
+                    <label>
+                        Admin Username
+                        <input name="username"
+                               placeholder="Enter admin username"
+                               autocomplete="username">
+                    </label>
+
+                    <label>
+                        Admin Password
+                        <input name="password"
+                               type="password"
+                               placeholder="Enter admin password"
+                               autocomplete="current-password">
+                    </label>
+
+                </div>
+
+                <button type="submit">
+                    Sign In →
+                </button>
+
+            </form>
+
+            <p class="login-note">
+                Educational demonstration only. No real banking transactions.
+            </p>
+
+        </section>
+
+
+        <!-- ================= PRIVATE DASHBOARD ================= -->
+
+        <div id="private" hidden>
+
+
+            <!-- ================= OVERVIEW ================= -->
+
+            <section id="overview" class="view">
+
+                <div class="stats">
+
+                    <article>
+
+                        <span id="balanceLabel">
+                            Available Balance
+                        </span>
+
+                        <strong id="balance">—</strong>
+
+                        <small id="balanceDescription">
+                            Account balance
+                        </small>
+
+                    </article>
+
+                    <article>
+
+                        <span>Total Loans</span>
+
+                        <strong id="totalLoans">—</strong>
+
+                        <small>Registered loans</small>
+
+                    </article>
+
+                    <article>
+
+                        <span>Active Loans</span>
+
+                        <strong id="activeLoans">—</strong>
+
+                        <small>Loans under repayment</small>
+
+                    </article>
+
+                    <article>
+
+                        <span>Transactions</span>
+
+                        <strong id="txcount">—</strong>
+
+                        <small>Transaction records</small>
+
+                    </article>
+
+                </div>
+
+                <div class="panel welcome-panel">
+
+                    <div class="eyebrow">
+                        SMART FINANCIAL MANAGEMENT
+                    </div>
+
+                    <h2 id="welcomeTitle">
+                        Welcome to SDFC Finance
+                    </h2>
+
+                    <p id="welcomeDescription">
+                        Manage banking services, calculate EMIs,
+                        track loans and monitor repayments.
+                    </p>
+
+                    <button type="button"
+                            onclick="show('emi')">
+                        Calculate EMI →
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= EMI CALCULATOR ================= -->
+
+            <section id="emi" class="view" hidden>
+
+                <div class="grid2">
+
+                    <div class="panel">
+
+                        <h2>EMI Calculator</h2>
+
+                        <p>
+                            Calculate estimated monthly loan installments.
+                        </p>
+
+                        <form id="emiForm">
+
+                            <label>
+                                Loan Amount (₹)
+
+                                <input name="principal"
+                                       type="number"
+                                       min="0.01"
+                                       max="100000000"
+                                       step="0.01"
+                                       value="500000"
+                                       required>
+                            </label>
+
+                            <label>
+                                Annual Interest Rate (%)
+
+                                <input name="interest_rate"
+                                       type="number"
+                                       min="0"
+                                       max="100"
+                                       step="0.01"
+                                       value="10"
+                                       required>
+                            </label>
+
+                            <label>
+                                Loan Tenure (Months)
+
+                                <input name="months"
+                                       type="number"
+                                       min="1"
+                                       max="600"
+                                       step="1"
+                                       value="60"
+                                       required>
+                            </label>
+
+                            <button type="submit">
+                                Calculate EMI →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div class="panel">
+
+                        <h2>Calculation Result</h2>
+
+                        <p>
+                            Fixed-rate monthly repayment estimate.
+                        </p>
+
+                        <div class="emi-results">
+
+                            <div class="emi-result-item">
+                                <span>Monthly EMI</span>
+                                <strong id="emiMonthly">₹0.00</strong>
+                            </div>
+
+                            <div class="emi-result-item">
+                                <span>Loan Amount</span>
+                                <strong id="emiPrincipal">₹0.00</strong>
+                            </div>
+
+                            <div class="emi-result-item">
+                                <span>Total Interest</span>
+                                <strong id="emiInterest">₹0.00</strong>
+                            </div>
+
+                            <div class="emi-result-item">
+                                <span>Total Repayment</span>
+                                <strong id="emiTotal">₹0.00</strong>
+                            </div>
+
+                        </div>
+
+                        <p style="margin-top:20px">
+                            Educational calculation excluding
+                            processing fees and additional charges.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= CUSTOMER LOANS ================= -->
+
+            <section id="loans"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Apply for a New Loan</h2>
+
+                    <p>
+                        Submit a fictional loan application.
+                        A bank admin must approve it before EMI payments.
+                    </p>
+
+                    <form id="loanForm">
+
+                        <label>
+                            Loan Amount (₹)
+
+                            <input name="principal"
+                                   type="number"
+                                   min="0.01"
+                                   max="100000000"
+                                   step="0.01"
+                                   value="10000"
+                                   required>
+                        </label>
+
+                        <label>
+                            Annual Interest Rate (%)
+
+                            <input name="interest_rate"
+                                   type="number"
+                                   min="0"
+                                   max="100"
+                                   step="0.01"
+                                   value="10"
+                                   required>
+                        </label>
+
+                        <label>
+                            Loan Tenure (Months)
+
+                            <input name="months"
+                                   type="number"
+                                   min="1"
+                                   max="600"
+                                   step="1"
+                                   value="12"
+                                   required>
+                        </label>
+
+                        <button type="submit">
+                            Submit Loan Application →
+                        </button>
+
+                    </form>
+
+                </div>
+
+                <div class="panel">
+
+                    <h2>My Loan Records</h2>
+
+                    <p>
+                        Track applications, approvals and repayment progress.
+                    </p>
+
+                    <button type="button" onclick="loadLoans()">
+                        Refresh Loans
+                    </button>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Principal</th>
+                                <th>Rate</th>
+                                <th>Monthly EMI</th>
+                                <th>Progress</th>
+                                <th>Outstanding</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="loanRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= REPAYMENT SCHEDULE ================= -->
+
+            <section id="schedule"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Loan Repayment Schedule</h2>
+
+                    <p>
+                        View installment dates, EMI amounts,
+                        principal, interest and payment status.
+                    </p>
+
+                    <label>
+                        Select Loan
+
+                        <select id="scheduleLoanSelect">
+                            <option value="">
+                                Choose a loan
+                            </option>
+                        </select>
+
+                    </label>
+
+                    <button type="button"
+                            onclick="loadSelectedSchedule()">
+                        View Repayment Schedule →
+                    </button>
+
+                    <h3 id="scheduleTitle">
+                        No loan selected
+                    </h3>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>EMI No.</th>
+                                <th>Due Date</th>
+                                <th>EMI Amount</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Status</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="scheduleRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= TRANSFER MONEY ================= -->
+
+            <section id="transfer"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Transfer Money</h2>
+
+                    <p>
+                        Transfer fictional funds between customer accounts.
+                    </p>
+
+                    <form id="transferForm">
+
+                        <label>
+                            Beneficiary Account Number
+
+                            <input name="destination"
+                                   value="10010002"
+                                   required>
+                        </label>
+
+                        <label>
+                            Transfer Amount (₹)
+
+                            <input name="amount"
+                                   type="number"
+                                   min="0.01"
+                                   step="0.01"
+                                   value="500"
+                                   required>
+                        </label>
+
+                        <button type="submit">
+                            Transfer Money →
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= DEPOSIT / WITHDRAW ================= -->
+
+            <section id="cash"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="grid2">
+
+                    <div class="panel">
+
+                        <h2>Deposit Money</h2>
+
+                        <p>
+                            Add fictional money to your account.
+                        </p>
+
+                        <form id="depositForm">
+
+                            <input name="amount"
+                                   type="number"
+                                   min="0.01"
+                                   step="0.01"
+                                   placeholder="Amount ₹"
+                                   required>
+
+                            <button type="submit">
+                                Deposit Money →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div class="panel">
+
+                        <h2>Withdraw Money</h2>
+
+                        <p>
+                            Withdraw from your demo balance.
+                        </p>
+
+                        <form id="withdrawForm">
+
+                            <input name="amount"
+                                   type="number"
+                                   min="0.01"
+                                   step="0.01"
+                                   placeholder="Amount ₹"
+                                   required>
+
+                            <button type="submit">
+                                Withdraw Money →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= CUSTOMER PROFILE ================= -->
+
+            <section id="profile"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>My Account Profile</h2>
+
+                    <p>
+                        View and update your account holder name.
+                    </p>
+
+                    <p>
+                        <strong>Account Number:</strong>
+                        <span id="profileNumber">—</span>
+                    </p>
+
+                    <p>
+                        <strong>Account Holder:</strong>
+                        <span id="profileName">—</span>
+                    </p>
+
+                    <form id="updateForm">
+
+                        <label>
+                            Update Account Holder Name
+
+                            <input name="name"
+                                   placeholder="Enter updated name"
+                                   required>
+                        </label>
+
+                        <button type="submit">
+                            Update My Profile →
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= CUSTOMER HISTORY ================= -->
+
+            <section id="history"
+                     class="view"
+                     data-role="CUSTOMER"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>My Transaction History</h2>
+
+                    <p>
+                        View your deposits, withdrawals, transfers
+                        and EMI payments.
+                    </p>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Date (UTC)</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="historyRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN ACCOUNT MANAGEMENT ================= -->
+
+            <section id="accounts"
+                     class="view"
+                     data-role="ADMIN"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Customer Account Management</h2>
+
+                    <p>
+                        Create, update and manage customer accounts.
+                    </p>
+
+                    <button type="button" onclick="loadAdminAccounts()">
+                        Refresh Customer Accounts
+                    </button>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>Account No.</th>
+                                <th>Customer Name</th>
+                                <th>Balance</th>
+                                <th>Status</th>
+                                <th>Created</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="accountRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+                <div class="grid2 section-gap">
+
+                    <div class="panel">
+
+                        <h2>Create Customer Account</h2>
+
+                        <form id="createForm">
+
+                            <label>
+                                Customer Name
+
+                                <input name="name"
+                                       placeholder="Customer name"
+                                       required>
+                            </label>
+
+                            <label>
+                                Customer PIN
+
+                                <input name="pin"
+                                       type="password"
+                                       placeholder="4-digit PIN"
+                                       minlength="4"
+                                       maxlength="4"
+                                       required>
+                            </label>
+
+                            <button type="submit">
+                                Create Account →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                    <div class="panel">
+
+                        <h2>Update Customer Account</h2>
+
+                        <form id="adminUpdateForm">
+
+                            <label>
+                                Customer Account Number
+
+                                <input name="number"
+                                       placeholder="Account number"
+                                       required>
+                            </label>
+
+                            <label>
+                                New Customer Name
+
+                                <input name="name"
+                                       placeholder="Updated customer name"
+                                       required>
+                            </label>
+
+                            <button type="submit">
+                                Update Account →
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+
+                <div class="panel section-gap">
+
+                    <h2>Deactivate Customer Account</h2>
+
+                    <p>
+                        An account can be deactivated only when its
+                        balance is zero and no active or pending loans remain.
+                    </p>
+
+                    <form id="adminDeactivateForm">
+
+                        <label>
+                            Customer Account Number
+
+                            <input name="number"
+                                   placeholder="Account to deactivate"
+                                   required>
+                        </label>
+
+                        <button class="danger" type="submit">
+                            Deactivate Account
+                        </button>
+
+                    </form>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN LOAN MANAGEMENT ================= -->
+
+            <section id="adminLoans"
+                     class="view"
+                     data-role="ADMIN"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Loan Application Management</h2>
+
+                    <p>
+                        Review customer loans and approve or reject
+                        pending applications.
+                    </p>
+
+                    <button type="button" onclick="loadAdminLoans()">
+                        Refresh Applications
+                    </button>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>Loan ID</th>
+                                <th>Customer</th>
+                                <th>Account No.</th>
+                                <th>Principal</th>
+                                <th>Interest</th>
+                                <th>Monthly EMI</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="adminLoanRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN TRANSACTION HISTORY ================= -->
+
+            <section id="adminHistory"
+                     class="view"
+                     data-role="ADMIN"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>All Banking Transactions</h2>
+
+                    <p>
+                        View transaction records across all
+                        demonstration customer accounts.
+                    </p>
+
+                    <button type="button" onclick="loadAdminHistory()">
+                        Refresh Transactions
+                    </button>
+
+                    <div class="tablewrap">
+
+                        <table>
+
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Type</th>
+                                <th>From</th>
+                                <th>To</th>
+                                <th>Amount</th>
+                                <th>Date (UTC)</th>
+                            </tr>
+                            </thead>
+
+                            <tbody id="adminHistoryRows"></tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= ADMIN INTEGRITY CHECK ================= -->
+
+            <section id="audit"
+                     class="view"
+                     data-role="ADMIN"
+                     hidden>
+
+                <div class="panel">
+
+                    <h2>Financial Integrity Check</h2>
+
+                    <p>
+                        Verify database balances, transaction references
+                        and loan-account references.
+                    </p>
+
+                    <button type="button" onclick="runAudit()">
+                        Run Integrity Check
+                    </button>
+
+                    <pre id="auditResult">Not yet run</pre>
+
+                </div>
+
+            </section>
+
+
+            <!-- ================= STATUS ================= -->
+
+            <div id="status"
+                 class="status"
+                 role="status">
+            </div>
+
+
+            <!-- ================= SIGN OUT ================= -->
+
+            <button class="logout"
+                    type="button"
+                    onclick="logout()">
+                Sign Out →
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+<script src="/static/app.js"></script>
+<script src="/static/theme.js"></script>
+
+</body>
+</html>
